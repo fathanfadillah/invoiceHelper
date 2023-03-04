@@ -1,0 +1,8 @@
+{
+  "name": "InvoiceMaker",
+  "version": "1.0.0",
+  "description": "Make automation for invoice",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT"
+}
