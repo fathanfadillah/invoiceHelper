@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
+    <title>Invoice</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -14,7 +14,7 @@
   <body>
     <div class="container pt-5">
       <h1 class="text-center">Inovice Helper</h1>
-      <form method="GET" action="" class="mt-5">
+      <form method="GET" action="#" onsubmit="formIsSubmitted()" class="mt-5">
         <h5>Header</h5>
         <div class="row mt-3">
           <div class="col">
@@ -28,7 +28,7 @@
           </div>
           <div class="col">
             <input
-              type="text"
+              type="date"
               class="form-control"
               placeholder="Expire Date"
               aria-label="Expire Date"
@@ -44,7 +44,7 @@
               class="form-control"
               placeholder="First name"
               aria-label="First name"
-              id="firstName"
+              id="firstNameSender"
             />
           </div>
           <div class="col">
@@ -53,16 +53,16 @@
               class="form-control"
               placeholder="Last name"
               aria-label="Last name"
-              id="lastName"
+              id="lastNameSender"
             />
           </div>
           <div class="col">
             <input
-              type="text"
+              type="email"
               class="form-control"
               placeholder="Email Address"
               aria-label="Email Address"
-              id="emailAddress"
+              id="emailAddressSender"
             />
           </div>
         </div>
@@ -72,7 +72,7 @@
               type="text"
               class="form-control"
               placeholder="Address"
-              aria-label="Address"
+              aria-label="AddressSender"
               id="address"
             />
           </div>
@@ -99,7 +99,7 @@
           </div>
           <div class="col">
             <input
-              type="text"
+              type="email"
               class="form-control"
               placeholder="Email Address"
               aria-label="Email Address"
@@ -127,7 +127,7 @@
                 class="form-control"
                 placeholder="Label"
                 aria-label="Label"
-                id="label"
+                id="label-0"
               />
             </div>
             <div class="col">
@@ -136,7 +136,16 @@
                 class="form-control"
                 placeholder="Quantity"
                 aria-label="Quantity"
-                id="quantity"
+                id="quantity-0"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Price"
+                aria-label="Price"
+                id="price-0"
               />
             </div>
             <div class="col">
@@ -145,25 +154,16 @@
                 class="form-control"
                 placeholder="Discount"
                 aria-label="Discount"
-                id="discount"
+                id="discount-0"
               />
             </div>
             <div class="col">
               <input
-                type="text"
-                class="form-control"
-                placeholder="Price"
-                aria-label="Price"
-                id="price"
-              />
-            </div>
-            <div class="col">
-              <input
-                type="text"
+                type="number"
                 class="form-control"
                 placeholder="Taxed"
                 aria-label="Taxed"
-                id="taxed"
+                id="taxed-0"
               />
             </div>
           </div>
@@ -242,6 +242,8 @@
     </div>
     <!-- all form must be using form floating -->
 
+    <button onClick="printPdf(2)">Print PDF</button>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -253,57 +255,43 @@
       crossorigin="anonymous"
     ></script>
 
-    <script>
-      const productElement = `<div class="row mt-3">
-          <div class="col">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Label"
-              aria-label="Label"
-              id="label"
-            />
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Quantity"
-              aria-label="Quantity"
-              id="quantity"
-            />
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Discount"
-              aria-label="Discount"
-              id="discount"
-            />
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Price"
-              aria-label="Price"
-              id="price"
-            />
-          </div>
-          <div class="col">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Taxed"
-              aria-label="Taxed"
-              id="taxed"
-            />
-          </div>
-        </div>`;
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.41/vue.global.prod.min.js"
+      integrity="sha512-0bHFSq8ASKChkYlLEzEnqpH3H/RSqL7UvhhOmSPz5JxozXuMge8JtNuv/0cgZRv2ZUR0GO9rdo576xUbKcrNIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"
+      integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js"
+      integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="./getFromInput.js"></script>
+
+    <script type="text/javascript"></script>
+
+    <script src="./productEelement.js"></script>
+
+    <script src="./getProductInput.js"></script>
+
+    <script type="text/javascript">
+      let productNumber = 0;
+
       $("#addProduct").click(() => {
-        $("#productList").append(productElement);
+        productNumber++;
+        $("#productList").append(productElement(productNumber));
       });
     </script>
+
+    <script src="createPdf.js"></script>
   </body>
 </html>
