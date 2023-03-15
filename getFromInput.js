@@ -1,4 +1,28 @@
-let getFromInput = {}
+let getFromInput = {
+    invoiceNumber: '',
+    expireDate: '',
+    image: '',
+    sender: {
+        firstName: '',
+        lastName: '',
+        emailAddress: '',
+        address: ''
+    },
+    recevier: {
+        firstName: '',
+        lastName: '',
+        emailAddress: '',
+        address: ''
+    },
+    bankName: '',
+    accountName: '',
+    accountNumber: '',
+    paymentReference: '',
+    customerReference: '',
+    subTotal: 0,
+    ppn: 11,
+    total: 0
+}
 
 $("#invoiceNumber").on("input", (event) => {
     getFromInput.invoiceNumber = event.target.value;
@@ -8,36 +32,38 @@ $("#expireDate").on("input", (event) => {
     getFromInput.expireDate = event.target.value;
 });
 
+getFromInput.sender = {}
 $("#firstNameSender").on("input", (event) => {
-    getFromInput.fistName = event.target.value;
+    getFromInput.sender.firstName = event.target.value;
 });
 
 $("#lastNameSender").on("input", (event) => {
-    getFromInput.lastName = event.target.value;
+    getFromInput.sender.lastName = event.target.value;
 });
 
 $("#emailAddressSender").on("input", (event) => {
-    getFromInput.emailAddress = event.target.value;
+    getFromInput.sender.emailAddress = event.target.value;
 });
 
 $("#addressSender").on("input", (event) => {
-    getFromInput.address = event.target.value;
+    getFromInput.sender.address = event.target.value;
 });
 
+getFromInput.recevier = {}
 $("#firstNameRecevier").on("input", (event) => {
-    getFromInput.fistName = event.target.value;
+    getFromInput.recevier.firstName = event.target.value;
 });
 
 $("#lastNameRecevier").on("input", (event) => {
-    getFromInput.lastName = event.target.value;
+    getFromInput.recevier.lastName = event.target.value;
 });
 
 $("#emailAddressRecevier").on("input", (event) => {
-    getFromInput.emailAddress = event.target.value;
+    getFromInput.recevier.emailAddress = event.target.value;
 });
 
 $("#addressRecevier").on("input", (event) => {
-    getFromInput.address = event.target.value;
+    getFromInput.recevier.address = event.target.value;
 });
 
 $("#bankName").on("input", (event) => {
@@ -50,6 +76,10 @@ $("#bankBranch").on("input", (event) => {
 
 $("#accountName").on("input", (event) => {
     getFromInput.accountName = event.target.value;
+});
+
+$("#accountNumber").on("input", (event) => {
+    getFromInput.accountNumber = event.target.value;
 });
 
 $("#paymentReference").on("input", (event) => {
