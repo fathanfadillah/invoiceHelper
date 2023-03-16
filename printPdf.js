@@ -76,7 +76,7 @@ const printPdf = (formData) => {
                         {
                             alignment: "right",
                             stack: [
-                                { text: formData.recevier.firstname + formData.recevier.lastName, bold: true, margin: [0, 0, 0, 10] },
+                                { text: formData.recevier.firstName + formData.recevier.lastName, bold: true, margin: [0, 0, 0, 10] },
                                 formData.recevier.address,
                                 formData.recevier.emailAdress,
                             ],
