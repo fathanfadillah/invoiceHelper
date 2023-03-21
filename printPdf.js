@@ -8,19 +8,10 @@ const getToday = () => {
     return today
 }
 
-const countAmount = (product) => {
-    console.log(product)
-    const { price, qty, discount, taxed } = product
-    console.log(price, qty, discount, taxed)
-    const amount = (price * qty) - (price * discount / 100) + (price * taxed / 100)
-    console.log('amount', amount)
-    return amount
-}
-
-const countTotal = (product) => {
-    const total = product.reduce((acc, curr) => acc.amount + curr, 0)
-    console.log('total', total)
-    return total
+const getName = (firstName, lastName) => {
+    if (firstName && lastName) return { text: `${firstName} ${lastName}`, bold: true, margin: [0, 0, 0, 10] }
+    if (firstName || lastName) return { text: firstName || lastName, bold: true, margin: [0, 0, 0, 10] }
+    if (!firstName && !lastName) return { text: "", bold: true, margin: [0, 0, 0, 10] }
 }
 
 const printPdf = (formData) => {
@@ -29,12 +20,6 @@ const printPdf = (formData) => {
         fit: [100, 100]
     } : ''
 
-    // for (product in formData.product) {
-    //     console.log(product)
-    //     formData.product.amount = countAmount(product)
-    // }
-
-    // formData.total = countTotal(formData.product)
     let subTotal = 0
     formData['product'].map((product) => {
         return subTotal += product.amount
@@ -45,14 +30,11 @@ const printPdf = (formData) => {
 
     formData.startDate = getToday()
 
-    console.log('formData', formData)
-
     const tableHeader = [[{ text: 'QTY', bold: true, fontSize: 9 }, { text: 'DESCRIPTION', bold: true, fontSize: 9 }, { text: 'DISCOUNT', bold: true, fontSize: 9 }, { text: 'UNITs', bold: true, fontSize: 9 }, { text: 'TAXED', bold: true, fontSize: 9 }, { text: 'AMOUNT (Rp.)', bold: true, fontSize: 9 }]]
 
-    const tableBody = [
-        ['1 - Pcs', 'Fuse 2A', { text: '0.0%', alignment: 'right' }, { text: 1000, alignment: 'right' }, { text: 100, alignment: 'right' }, { text: 1100, alignment: 'right' }],
-        ['1 - Pcs', 'Fuse 2A', { text: '0.0%', alignment: 'right' }, { text: 1000, alignment: 'right' }, { text: 100, alignment: 'right' }, { text: 1100, alignment: 'right' }],
-    ]
+    const tableBody = formData.product.map((product) => (
+        [`${product.quantity} - Pcs`, product.label, { text: `${product.discount}%`, alignment: 'right' }, { text: product.price, alignment: 'right' }, { text: product.taxed, alignment: 'right' }, { text: product.amount, alignment: 'right' }]
+    ))
 
     const tableFooter = [
         [{ text: 'SubTotal', colSpan: 5 }, '', '', '', '', { text: formData.subTotal, alignment: 'right' }],
@@ -61,8 +43,6 @@ const printPdf = (formData) => {
     ]
 
     const table = (tableHeader.concat(tableBody)).concat(tableFooter)
-
-    console.log('table', table)
 
     const docDefinition = {
         pageSize: 'A4',
@@ -76,7 +56,8 @@ const printPdf = (formData) => {
                         {
                             alignment: "right",
                             stack: [
-                                { text: formData.recevier.firstName + formData.recevier.lastName, bold: true, margin: [0, 0, 0, 10] },
+                                { text: "To :", alignment: "right" },
+                                getName(formData.recevier.firstName, formData.recevier.lastName),
                                 formData.recevier.address,
                                 formData.recevier.emailAdress,
                             ],
@@ -89,7 +70,8 @@ const printPdf = (formData) => {
                     [
                         {
                             stack: [
-                                { text: formData.sender.firstName + formData.sender.lastName, bold: true, margin: [0, 0, 0, 10] },
+                                'From : ',
+                                getName(formData.sender.firstName, formData.sender.lastName),
                                 { text: formData.sender.address, margin: [0, 0, 0, 10] },
                                 formData.sender.emailAdress,
                             ]
