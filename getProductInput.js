@@ -1,25 +1,27 @@
-const formIsSubmitted = (event) => {
-    console.log(getFromInput);
+const getProductInput = async (getFromInput) => {
+    const neWFromInput = getFromInput
+    neWFromInput.product = [];
 
-    getFromInput.product = [];
-
-    for (let index = 0; index < productNumber; index++) {
+    for (let index = 0; index <= productNumber; index++) {
         const product = {};
 
-        const label = $("#label-0").val();
-        const quantity = $("#quantity-0").val();
-        const price = $("#price-0").val();
-        const discount = $("#discount-0").val();
-        const taxed = $("#taxed-0").val();
+        const label = $(`#label-${index}`).val();
+        const quantity = $(`#quantity-${index}`).val();
+        const price = $(`#price-${index}`).val();
+        const discount = $(`#discount-${index}`).val();
+        const taxed = $(`#taxed-${index}`).val();
+        const totalPrice = price * quantity
+        const amount = totalPrice - (totalPrice * discount / 100) + (totalPrice * taxed / 100)
 
         product.label = label;
         product.quantity = quantity;
         product.price = price;
         product.discount = discount;
         product.taxed = taxed;
+        product.amount = amount;
 
-        getFromInput.product.push(product);
+        neWFromInput.product.push(product);
     }
 
-    console.log(getFromInput);
-};
+    return neWFromInput
+}
