@@ -14,7 +14,12 @@
   <body>
     <div class="container pt-5">
       <h1 class="text-center">Inovice Helper</h1>
-      <form method="GET" action="#" onsubmit="formIsSubmitted()" class="mt-5">
+      <form
+        method="GET"
+        action="#"
+        onsubmit="formIsSubmitted(getFromInput, file)"
+        class="mt-5"
+      >
         <h5>Header</h5>
         <div class="row mt-3">
           <div class="col">
@@ -33,6 +38,14 @@
               placeholder="Expire Date"
               aria-label="Expire Date"
               id="expireDate"
+            />
+          </div>
+          <div class="col">
+            <input
+              class="form-control"
+              type="file"
+              id="logo"
+              onchange="getImageData(this)"
             />
           </div>
         </div>
@@ -85,7 +98,7 @@
               class="form-control"
               placeholder="First name"
               aria-label="First name"
-              id="firstName"
+              id="firstNameRecevier"
             />
           </div>
           <div class="col">
@@ -94,7 +107,7 @@
               class="form-control"
               placeholder="Last name"
               aria-label="Last name"
-              id="lastName"
+              id="lastNameRecevier"
             />
           </div>
           <div class="col">
@@ -103,7 +116,7 @@
               class="form-control"
               placeholder="Email Address"
               aria-label="Email Address"
-              id="emailAddress"
+              id="emailAddressRecevier"
             />
           </div>
         </div>
@@ -114,7 +127,7 @@
               class="form-control"
               placeholder="Address"
               aria-label="Address"
-              id="address"
+              id="addressRecevier"
             />
           </div>
         </div>
@@ -137,6 +150,7 @@
                 placeholder="Quantity"
                 aria-label="Quantity"
                 id="quantity-0"
+                min="0"
               />
             </div>
             <div class="col">
@@ -146,6 +160,7 @@
                 placeholder="Price"
                 aria-label="Price"
                 id="price-0"
+                min="0"
               />
             </div>
             <div class="col">
@@ -155,6 +170,8 @@
                 placeholder="Discount"
                 aria-label="Discount"
                 id="discount-0"
+                min="0"
+                max="100"
               />
             </div>
             <div class="col">
@@ -164,6 +181,8 @@
                 placeholder="Taxed"
                 aria-label="Taxed"
                 id="taxed-0"
+                min="0"
+                max="100"
               />
             </div>
           </div>
@@ -242,8 +261,6 @@
     </div>
     <!-- all form must be using form floating -->
 
-    <button onClick="printPdf(2)">Print PDF</button>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -281,8 +298,6 @@
 
     <script src="./productEelement.js"></script>
 
-    <script src="./getProductInput.js"></script>
-
     <script type="text/javascript">
       let productNumber = 0;
 
@@ -290,8 +305,23 @@
         productNumber++;
         $("#productList").append(productElement(productNumber));
       });
+
+      let file;
+      const getImageData = (image) => {
+        file = image.files[0];
+      };
+
+      const toBase64 = async (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+        });
     </script>
 
-    <script src="createPdf.js"></script>
+    <script src="printPdf.js"></script>
+    <script src="./getProductInput.js"></script>
+    <script src="submitForm.js"></script>
   </body>
 </html>
