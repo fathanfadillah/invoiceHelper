@@ -33,7 +33,7 @@ const printPdf = (formData) => {
     const tableHeader = [[{ text: 'QTY', bold: true, fontSize: 9 }, { text: 'DESCRIPTION', bold: true, fontSize: 9 }, { text: 'DISCOUNT', bold: true, fontSize: 9 }, { text: 'UNITs', bold: true, fontSize: 9 }, { text: 'TAXED', bold: true, fontSize: 9 }, { text: 'AMOUNT (Rp.)', bold: true, fontSize: 9 }]]
 
     const tableBody = formData.product.map((product) => (
-        [`${product.quantity} - Pcs`, product.label, { text: `${product.discount}%`, alignment: 'right' }, { text: product.price, alignment: 'right' }, { text: product.taxed, alignment: 'right' }, { text: product.amount, alignment: 'right' }]
+        [`${product.quantity} - Pcs`, product.label, { text: `${product.discount}%`, alignment: 'right' }, { text: product.price, alignment: 'right' }, { text: `${product.taxed}%`, alignment: 'right' }, { text: product.amount, alignment: 'right' }]
     ))
 
     const tableFooter = [
