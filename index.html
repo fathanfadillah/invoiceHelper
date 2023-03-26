@@ -41,11 +41,13 @@
             />
           </div>
           <div class="col">
+            <label class="d-inline me-2" for="logo">LOGO</label>
             <input
-              class="form-control"
+              class="form-control w-75 d-inline"
               type="file"
               id="logo"
               onchange="getImageData(this)"
+              accept="image/png, image/jpeg"
             />
           </div>
         </div>
@@ -140,7 +142,7 @@
                 class="form-control"
                 placeholder="Label"
                 aria-label="Label"
-                id="label-0"
+                id="label"
               />
             </div>
             <div class="col">
@@ -149,7 +151,7 @@
                 class="form-control"
                 placeholder="Quantity"
                 aria-label="Quantity"
-                id="quantity-0"
+                id="quantity"
                 min="0"
               />
             </div>
@@ -159,31 +161,43 @@
                 class="form-control"
                 placeholder="Price"
                 aria-label="Price"
-                id="price-0"
+                id="price"
                 min="0"
               />
             </div>
             <div class="col">
               <input
                 type="text"
-                class="form-control"
+                class="form-control w-50 me-2 d-inline"
                 placeholder="Discount"
                 aria-label="Discount"
-                id="discount-0"
+                id="discount"
                 min="0"
                 max="100"
               />
+              <label for="discount" class="d-inline">%</label>
             </div>
             <div class="col">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Taxed"
-                aria-label="Taxed"
-                id="taxed-0"
-                min="0"
-                max="100"
-              />
+              <select
+                id="taxed"
+                class="form-select w-75"
+                aria-label="Default select example"
+              >
+                <option selected>Tax</option>
+                <option value="11">PPN 11%</option>
+                <option value="15">PPh 15%</option>
+              </select>
+            </div>
+            <div class="col">
+              <button
+                id="delete"
+                class="btn btn-danger"
+                type="button"
+                onclick="deleteRow(this)"
+                style="float: right"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -304,7 +318,16 @@
       $("#addProduct").click(() => {
         productNumber++;
         $("#productList").append(productElement(productNumber));
+        console.log("add productNumber", productNumber);
       });
+
+      const deleteRow = (element) => {
+        productNumber--;
+        console.log($("button").index(element));
+        const index = $("button").index(element);
+        $("#productList .row")[index].remove();
+        console.log("delete productNumber", productNumber);
+      };
 
       let file;
       const getImageData = (image) => {
